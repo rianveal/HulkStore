@@ -1,3 +1,9 @@
+.incial{
+  background-image: radial-gradient(rgba(255,255,255,0), rgba(255,255,255,1)), url('../image/papel-tapiz-comic.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .contenedor-sesion{
   width: 100%;
   height: 100vh;
@@ -9,6 +15,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  max-width: 350px;
   height: auto;
   padding: 10px;
   background: #ffffff;
@@ -39,4 +46,81 @@
 }
 .block{
   display: block;
+}
+.loading{
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  width: 70px;
+  height: 70px;
+}
+.loading img{
+  width: 70px;
+  height: 70px;
+}
+/* label color */
+.input-field label {
+  color: #000;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #1a237e;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #1a237e;
+  box-shadow: 0 1px 0 0 #1a237e;
+}
+
+input:not([type]):focus:not([readonly]), 
+input[type=text]:not(.browser-default):focus:not([readonly]), 
+input[type=password]:not(.browser-default):focus:not([readonly]), 
+input[type=email]:not(.browser-default):focus:not([readonly]), 
+input[type=url]:not(.browser-default):focus:not([readonly]), 
+input[type=time]:not(.browser-default):focus:not([readonly]), 
+input[type=date]:not(.browser-default):focus:not([readonly]), 
+input[type=datetime]:not(.browser-default):focus:not([readonly]), 
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]), 
+input[type=tel]:not(.browser-default):focus:not([readonly]), 
+input[type=number]:not(.browser-default):focus:not([readonly]), 
+input[type=search]:not(.browser-default):focus:not([readonly]), 
+textarea.materialize-textarea:focus:not([readonly]) {
+   border-bottom: 1px solid #1a237e;
+   -webkit-box-shadow: 0 1px 0 0 #1a237e;
+   box-shadow: 0 1px 0 0 #1a237e;
+}
+
+input:not([type]):focus:not([readonly])+label, 
+input[type=text]:not(.browser-default):focus:not([readonly])+label, 
+input[type=password]:not(.browser-default):focus:not([readonly])+label, 
+input[type=email]:not(.browser-default):focus:not([readonly])+label, 
+input[type=url]:not(.browser-default):focus:not([readonly])+label, 
+input[type=time]:not(.browser-default):focus:not([readonly])+label, 
+input[type=date]:not(.browser-default):focus:not([readonly])+label, 
+input[type=datetime]:not(.browser-default):focus:not([readonly])+label, 
+input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, 
+input[type=tel]:not(.browser-default):focus:not([readonly])+label, 
+input[type=number]:not(.browser-default):focus:not([readonly])+label, 
+input[type=search]:not(.browser-default):focus:not([readonly])+label, 
+textarea.materialize-textarea:focus:not([readonly])+label {
+   color: #1a237e;
+}
+/* INPUT TYPE NUMBER FORMAT */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+table.dataTable tbody td {
+  padding: 10px 18px;
+}
+@media only screen and (min-width: 601px){
+  .titulo-logo{
+    margin-left: 20px;
+  }
+  .boton-especial{
+    margin-top: 24px;
+  }
 }

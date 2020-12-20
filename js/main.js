@@ -29,11 +29,15 @@ function validarCredenciales(usuario, contrasena){
     .then( datos => {
       if( validaRespuestaPeticion(datos, 'Acceso denegado') ){
         localStorage.setItem('hs_us', usuario)
-        localStorage.setItem('hs_do', documento)
-        localStorage.setItem('hs_pe', perfil)
+        localStorage.setItem('hs_do', datos.personId)
+        localStorage.setItem('hs_pe', datos.profile)
+        window.location = 'home.html'
+
       }
     })
     .catch( error => {
       console.error(error.message)
     })
 }
+
+

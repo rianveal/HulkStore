@@ -50,3 +50,60 @@ function validaRespuestaPeticion(datos, mensajeRespuestaNo){
 
   return validaRespuesta
 }
+
+function AgregarORemoverClaseNone(id, proccess){
+  if( proccess === 'a' ){
+    document.querySelector('#'+id).classList.add('none')
+  }else if( proccess === 'r' ){
+    document.querySelector('#'+id).classList.remove('none')
+  }
+}
+
+function AgregarORemoverClaseDisabled(id, proccess){
+  if( proccess === 'a' ){
+    document.querySelector('#'+id).classList.add('disabled')
+  }else if( proccess === 'r' ){
+    document.querySelector('#'+id).classList.remove('disabled')
+  }
+}
+
+function cargarSelector(idSelect, data){
+  selectElement = document.querySelector('#'+idSelect)
+  optionSelection = document.createElement('option')
+  optionSelection.setAttribute('value', '')
+  optionSelection.setAttribute('disabled', 'true')
+  optionSelection.setAttribute('selected', 'true')
+  optionSelection.innerText = 'Seleccione'
+  selectElement.append(optionSelection)
+  data.forEach( el => {
+    option = document.createElement('option')
+    option.setAttribute('value', el.id)
+    option.innerText = el.value
+    selectElement.append(option)
+  })
+  M.FormSelect.init(selectElement)
+}
+
+function cargarSelectorEspecifico(idSelect, data, idSelected){
+  selectElement = document.querySelector('#'+idSelect)
+  data.forEach( el => {
+    option = document.createElement('option')
+    if( el.id === idSelected ){
+      option.setAttribute('selected', 'true') 
+    }
+    option.setAttribute('value', el.id)
+    option.innerText = el.value
+    selectElement.append(option)
+  })
+  M.FormSelect.init(selectElement)
+}
+
+function mostrarModal(idModal, proceso){
+  elem = document.querySelector('#'+idModal)
+  instance  = M.Modal.getInstance(elem);
+  if( proceso === 'o' ){ 
+    instance.open();
+  }else if( proceso === 'c' ){
+    instance.close();
+  }
+}

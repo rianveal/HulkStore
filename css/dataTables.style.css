@@ -1,0 +1,72 @@
+.dataTables_length{
+    display: none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+    border: none;
+    background: #2F52E0;
+    color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+    color: #2F52E0 !important;
+    background: #E8EBF7;
+    box-shadow: none;
+    border: 1px solid transparent;
+}
+table.dataTable tbody td{
+    padding: 5px 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+table.dataTable thead th{
+    font-size: 14px;
+}
+
+
+/*table.dataTable tbody td:nth-child(1),
+table.dataTable tbody td:nth-child(3){
+    width: 8%;
+}
+table.dataTable tbody td:nth-child(2),
+table.dataTable tbody td:nth-child(4){
+    width: 20%;
+}
+table.dataTable tbody td:nth-child(5){
+    width: 15%;
+}
+table.dataTable thead th:nth-child(3),
+table.dataTable thead th:nth-child(5){
+    text-align: center;
+    width: 240px;
+}*/
+
+table.dataTable thead th{
+    text-align: center;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_paginate{
+    font-size: 14px;
+}
+.dataTables_wrapper .dataTables_info{
+    margin-left: 23px;
+}
+.dataTables_paginate{
+    margin-right: 10px;
+}
+.dataTables_wrapper .dataTables_filter{
+    text-align: left;
+}        
+.dataTables_wrapper .dataTables_filter input{
+    color: #212121;
+    font-size: 14px;
+}
+.dataTables_wrapper .dataTables_filter{
+    width: 300px;
+    margin: 0 35px 15px 0;
+}
+
+.dt-buttons{
+  margin: 0;
+}

@@ -7,10 +7,12 @@
   <link rel="stylesheet" href="css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="css/dataTables.style.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav id="navPrincipal">
+  <nav id="navPrincipal" class="indigo darken-4">
   </nav>
   <ul id="slide-out" class="sidenav sideNav">
   </ul>
@@ -24,8 +26,8 @@
       <h5>Administración de productos</h5>
       <a href="#modalAgregarProducto" class="waves-effect waves-light btn blue darken-1 modal-trigger">Agregar producto</a>
     </div>
-    <div class="row" id="contenedorTablaProductos">
-      <table class="responsive-table"> 
+    <div class="row none" id="contenedorTablaProductos">
+      <table class="responsive-table" id="tabla-productos" style="width: auto;"> 
         <thead>
           <tr>
               <th>Producto</th>
@@ -55,21 +57,21 @@
           <div class="collapsible-header"><i class="material-icons">add_box</i>Acciones rápidas</div>
           <div class="collapsible-body">
             <div class="row" id="contenedorAgregarMarca">
-              <div class="input-field col s12 m4">
+              <div class="input-field col s12 m6">
                 <input placeholder="Marca" id="marcaAgregar" type="text">
                 <label for="marcaAgregar">Marca</label>
               </div>
-              <div class="col s12 m4">
+              <div class="col s12 m4 boton-especial">
                 <a class="waves-effect waves-light btn blue darken-1" id="btnAgregarMarca">Agregar marca</a>
               </div>
             </div>
             <div class="row" id="contenedorAgregarCategoria">
-              <div class="input-field col s12 m4">
+              <div class="input-field col s12 m6">
                 <input placeholder="Categoría" id="categoriaAgregar" type="text">
                 <label for="categoriaAgregar">Categoría</label>
               </div>
-              <div class="col s12 m4">
-                <a class="waves-effect waves-light btn blue darken-1" id="btnAgregarCategoria">Agregar marca</a>
+              <div class="col s12 m4 boton-especial">
+                <a class="waves-effect waves-light btn blue darken-1" id="btnAgregarCategoria">Agregar categoría</a>
               </div>
             </div>
           </div>
@@ -77,35 +79,18 @@
       </ul>  
       <form action="" class="row">
         <div class="input-field col s12 m4">
-          <input placeholder="Nombre" id="nombreProducto" type="text">
+          <input placeholder="Nombre" id="nombreProducto" type="text" autocomplete="off">
           <label for="nombreProducto">Nombre</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field col s12 m4">
           <select id="marcaProducto">
-            <option value="" disabled selected>Seleccione</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
           </select>
           <label>Marca</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field col s12 m4">
           <select id="categoriaProducto">
-            <option value="" disabled selected>Seleccione</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
           </select>
           <label>Categoría</label>
-        </div>
-        <div class="input-field col s12">
-          <select id="proveedorProducto">
-            <option value="" disabled selected>Seleccione</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-          </select>
-          <label>Proveedor</label>
         </div>
         <div class="input-field col s12 m4">
           <input placeholder="Valor unitario" id="valorUnitario" type="number">
@@ -123,6 +108,10 @@
           <input placeholder="Tope máximo" id="topeMaximoProducto" type="number">
           <label for="topeMaximoProducto">Tope máximo</label>
         </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Inventario inicial" id="saldo" type="number">
+          <label for="saldo">Inventario inicial</label>
+        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -131,7 +120,80 @@
     </div>
   </div>
 
+  <div id="modalActualizarProducto" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Producto</h4>
+      <p>Actualizar</p> 
+      <div class="row">
+        <div class="col s12 m12">
+          <h6><strong>Movimiento de inventario</strong></h6>
+        </div>
+        <div class="input-field col s12 m3">
+          <input placeholder="Inventario actual" id="saldo_op" type="number">
+          <label for="saldo_op">Inventario actual</label>
+        </div>
+        <div class="input-field col s12 m2">
+          <input placeholder="Cantidad" id="cantidad" type="number">
+          <label for="cantidad">Cantidades</label>
+        </div>
+        <div class="col s12 m4 boton-especial">
+          <a class="waves-effect waves-light btn" id="btnRestarCantidad"><i class="material-icons">remove</i></a>
+          <a class="waves-effect waves-light btn blue" id="btnAgregarCantidad"><i class="material-icons">add</i></a>
+        </div>
+      </div>
+      <form action="" class="row">
+        <div class="col s12 m12">
+          <h6 style="margin-top: 0;"><strong>Información general</strong></h6>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Nombre" id="nombreProducto_op" type="text" autocomplete="off">
+          <label for="nombreProducto_op">Nombre</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <select id="marcaProducto_op">
+          </select>
+          <label>Marca</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <select id="categoriaProducto_op">
+          </select>
+          <label>Categoría</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Valor unitario" id="valorUnitario_op" type="number">
+          <label for="valorUnitario_op">Valor unitario</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Valor venta" id="valorVenta_op" type="number">
+          <label for="valorVenta_op">Valor venta</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Tope mínimo" id="topeMinimoProducto_op" type="number">
+          <label for="topeMinimoProducto_op">Tope mínimo</label>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Tope máximo" id="topeMaximoProducto_op" type="number">
+          <label for="topeMaximoProducto_op">Tope máximo</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Salir</a>
+      <a href="#!" class="waves-effect waves-green btn-flat" id="btnActualizar">Actualizar</a>
+    </div>
+  </div>
+
+  <div class="loading none" id="loading">
+    <img src="image/loading-circle.gif" alt="">
+  </div>
+
+  <script src="js/jquery-3.5.0.min.js"></script>
   <script src="js/materialize.min.js"></script>
+  <script src="js/dataTable/jquery.dataTables.min.js"></script>
+  <script src="js/dataTable/dataTables.buttons.min.js"></script>
+  <script src="js/dataTable/jszip.min.js"></script>
+  <script src="js/dataTable/vfs_fonts.js"></script>
+  <script src="js/dataTable/buttons.html5.min.js"></script>
   <script src="js/sweetalert2.min.js"></script>
   <script src="js/utilities.js"></script>
   <script src="js/menu.js"></script>
