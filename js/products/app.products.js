@@ -1,4 +1,5 @@
 origen = 'http://209.97.145.250:8080'
+//origen = 'http://localhost:8080'
 rutaServicio = origen+'/ApiRestHulkStore/recursosWeb/servicios'
 tablaProductos = null, idProductoGeneral = null, topeMinimo = null, topeMaximo = null
 vectorProductos = []
@@ -26,21 +27,26 @@ function obtenerProductos(){
     })
     .then( datos => {
       if( validaRespuestaPeticion(datos, 'No se encontraron productos') ){
-        datos.forEach(el => {
-          obj = {
-            'id': el.id,
-            'nombre': el.name,
-            'marca': el.brand,
-            'categoria': el.category,
-            'valorUnitario': el.unitValue,
-            'valorVenta': el.saleValue,
-            'topeMinimo': el.minimumExistence,
-            'topeMaximo': el.maximumExistence,
-            'saldo': el.balance,
-            'opcion': '<a class="waves-effect waves-light btn blue" id="'+el.id+'"><i class="material-icons">autorenew</i></a>'
-          }
-          vectorProductos.push(obj)
-        });
+        if( datos.length > 0 ){
+          datos.forEach(el => {
+            obj = {
+              'id': el.id,
+              'nombre': el.name,
+              'marca': el.brand,
+              'categoria': el.category,
+              'valorUnitario': el.unitValue,
+              'valorVenta': el.saleValue,
+              'topeMinimo': el.minimumExistence,
+              'topeMaximo': el.maximumExistence,
+              'saldo': el.balance,
+              'opcion': '<a class="waves-effect waves-light btn blue" id="'+el.id+'"><i class="material-icons">autorenew</i></a>'
+            }
+            vectorProductos.push(obj)
+          });
+        }else{
+          notificacion('info','No hay productos registrados',1200)
+          AgregarORemoverClaseNone('loading','a')
+        }
       }
       if( vectorProductos.length > 0 ){
         cargarProductosEnTabla(vectorProductos)
