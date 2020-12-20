@@ -35,6 +35,12 @@ function inicializaciones(){
 
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems, options);
+
+  var elems = document.querySelectorAll('.fixed-action-btn');
+  var instances = M.FloatingActionButton.init(elems, options);
+
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems, options);
 }
 
 function validaRespuestaPeticion(datos, mensajeRespuestaNo){
@@ -69,6 +75,8 @@ function AgregarORemoverClaseDisabled(id, proccess){
 
 function cargarSelector(idSelect, data){
   selectElement = document.querySelector('#'+idSelect)
+  selectElement.innerHTML = ''
+  M.FormSelect.init(selectElement)
   optionSelection = document.createElement('option')
   optionSelection.setAttribute('value', '')
   optionSelection.setAttribute('disabled', 'true')

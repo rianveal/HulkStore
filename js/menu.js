@@ -1,60 +1,68 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   perfil = localStorage.getItem('hs_pe')
-  cargarMenu(perfil)
+  cargarCabecera()
+  cargarMenuOpciones()
+  cargarOpciones()
   inicializaciones()
 }, false)
 
-function cargarMenu(perfil){
+function cargarCabecera(){
   nav = document.querySelector('#navPrincipal')
   contenindoNav = '<div class="nav-wrapper indigo darken-4">' +
                     '<a href="home.html" class="brand-logo left titulo-logo">HulkStore</a>' +
                  '</div>'
   nav.innerHTML =  contenindoNav              
 
-  sideNav = document.querySelector('.sideNav')
-
-  sideNavCabecera = '<li>' +
-                      '<div class="user-view">' +
-                        '<div class="background">' +
-                          '<img src="image/background.jpg">' +
-                        '</div>' +
-                        '<a href="#user"><img class="circle" src="image/user.png"></a>' +
-                        '<a href="#name"><span class="white-text name">Ricardo Velasquez</span></a>' +
-                        '<a href="#email"><span class="white-text email">developer</span></a>' +
-                      '</div>' +
-                    '</li>'
-
-  sideNavOpciones = '<li>' +
-                      '<ul class="collapsible">' +
-                        '<li>' +
-                          '<div class="collapsible-header"><i class="material-icons">ballot</i>Administracion general</div>' +
-                          '<div class="collapsible-body">' +
-                            '<ul>' +
-                              '<li><a href="products.html" style="margin-left: 30px;">Productos</a></li>' +
-                              '<li><a href="" style="margin-left: 30px;">Marcas</a></li>' +
-                              '<li><a href="" style="margin-left: 30px;">Categorías</a></li>' +
-                              '<li><a href="" style="margin-left: 30px;">Proveedores</a></li>' +
-                            '</ul>' +
-                          '</div>' +
-                        '</li>' +
-                        '<li>' +
-                          '<div class="collapsible-header"><i class="material-icons">table_view</i>Inventario</div>' +
-                          '<div class="collapsible-body">' +
-                            '<ul>' +
-                              '<li><a href="" style="margin-left: 30px;">Inventario de productos</a></li>' +
-                            '</ul>' +
-                          '</div>' +
-                        '</li>' +
-                        '<li>' +
-                          '<div class="collapsible-header"><i class="material-icons">settings</i>Configuración</div>' +
-                          '<div class="collapsible-body">' +
-                            '<ul>' +
-                              '<li><a href="" style="margin-left: 30px;">Usuarios</a></li>' +
-                            '</ul>' +
-                          '</div>' +
-                        '</li>' +
-                      '</ul>' +
-                    '</li>'
-                    
-  sideNav.innerHTML = sideNavCabecera + sideNavOpciones                  
+  sideNav = document.querySelector('.sideNav')                
 }
+
+function cargarOpciones(){
+  page = document.querySelector('#page')
+  if( page !== null ){
+    if( page.value === 'home' ){
+      contenedor = document.querySelector('#contenedorMenuOpciones')
+      opcionesUsuario = '<div class="col s10 offset-s1 m8">' +
+                          '<div class="card small">' +
+                            '<div class="card-image waves-effect waves-block waves-light">' +
+                              '<img class="activator" src="image/marvel-comics.jpg">' +
+                            '</div>' +
+                            '<div class="card-content">' +
+                              '<span class="card-title activator grey-text text-darken-4">Productos<i class="material-icons right">more_vert</i></span>' +
+                              '<p><a href="products.html">Acceder</a></p>' +
+                            '</div>' +
+                            '<div class="card-reveal">' +
+                              '<span class="card-title grey-text text-darken-4">Productos<i class="material-icons right">close</i></span>' +
+                              '<p>Opción para la adminsitración de productos</p>' +
+                            '</div>' +
+                          '</div>' +
+                        '</div>' 
+
+      contenedor.innerHTML = opcionesUsuario            
+    }
+  }
+}
+
+function cargarMenuOpciones(){
+  menu = document.querySelector('#menu-opciones')
+  opciones = '<a class="btn-floating btn-large purple darken-4">' +
+                '<i class="large material-icons">more_vert</i>' +
+              '</a>' +
+              '<ul>' +
+                '<li>' +
+                  '<a class="btn-floating purple darken-2 tooltipped" href="home.html" data-position="left" data-tooltip="Ir al inicio">' +
+                    '<i class="material-icons">home</i>' +
+                  '</a>' +
+                '</li>' +
+                '<li>' +
+                  '<a class="btn-floating purple darken-2 tooltipped" href="index.html" data-position="left" data-tooltip="Salir">' +
+                    '<i class="material-icons">exit_to_app</i>' +
+                  '</a>' +
+                '</li>' +
+              '</ul>'
+  menu.innerHTML = opciones            
+}
+
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};

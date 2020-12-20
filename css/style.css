@@ -30,12 +30,13 @@
   right: 10px;
 }
 .imagen-presentacion{
-  position: absolute;
+  /*position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
-  height: 50vh;
+  width: 80%;*/
+  display: none;
+  height: 80vh;
   background-image: url('../image/hulk.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -50,7 +51,7 @@
 .loading{
   position: absolute;
   bottom: 2%;
-  right: 2%;
+  left: 2%;
   width: 70px;
   height: 70px;
 }
@@ -122,5 +123,8 @@ table.dataTable tbody td {
   }
   .boton-especial{
     margin-top: 24px;
+  }
+  .imagen-presentacion{
+    display: block;
   }
 }

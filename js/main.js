@@ -1,4 +1,5 @@
-rutaServicio = 'http://localhost:8080/ApiRestHulkStore/recursosWeb/servicios'
+origen = 'http://localhost:8080'
+rutaServicio = origen+'/ApiRestHulkStore/recursosWeb/servicios'
 document.addEventListener('DOMContentLoaded', ()=>{
   capturarEventoIniciar()
 }, false)
@@ -40,4 +41,7 @@ function validarCredenciales(usuario, contrasena){
     })
 }
 
-
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};

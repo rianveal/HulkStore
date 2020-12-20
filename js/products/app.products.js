@@ -1,15 +1,19 @@
-rutaServicio = 'http://localhost:8080/ApiRestHulkStore/recursosWeb/servicios'
-tablaProductos = null, idProductoGeneral = null
+origen = 'http://localhost:8080'
+rutaServicio = origen+'/ApiRestHulkStore/recursosWeb/servicios'
+tablaProductos = null, idProductoGeneral = null, topeMinimo = null, topeMaximo = null
 vectorProductos = []
 document.addEventListener('DOMContentLoaded', ()=>{
   inicializaciones()
   obtenerProductos()
   obtenerMarcasYCategorias()
   validarAgregarProducto()
+  capturarEventoAgregarMarca()
+  capturarEventoAgregarCategoria()
   btnActualizar = document.querySelector('#btnActualizar')
   btnActualizar.addEventListener('click', (event)=>{
     capturarEventoActualizarProducto()
   })
+  capturarEventoAgregarRestarCantidad()
 }, false)
 
 function obtenerProductos(){
@@ -120,12 +124,22 @@ function validarAgregarProducto(){
       focusAndNotification('categoriaProducto','info','Categroría de producto es requerida',1000)
     }else if( valorUnitario === '' ){
       focusAndNotification('valorUnitario','info','Valor unitario de producto es requerido',1000)
+    }else if( Number(valorUnitario) < 0 ){
+      focusAndNotification('valorUnitario','info','Valor unitario no puede ser menor que cero',1200)
     }else if( valorVenta === '' ){
       focusAndNotification('valorVenta','info','Valor venta de producto es requerido',1000)
+    }else if( Number(valorVenta) < 0 ){
+      focusAndNotification('valorVenta','info','Valor venta no puede ser menor que cero',1200)
     }else if( topeMinimo === '' ){
       focusAndNotification('topeMinimoProducto','info','Tope mínimo de producto es requerido',1000)
+    }else if( Number(topeMinimo) < 0 ){
+      focusAndNotification('topeMinimoProducto','info','Tope mínimo no puede ser menor que cero',1200)
     }else if( topeMaximo === '' ){
       focusAndNotification('topeMaximoProducto','info','Tope máximo de producto es requerido',1000)
+    }else if( Number(topeMaximo) < 0 ){
+      focusAndNotification('topeMaximoProducto','info','Tope máximo no puede ser menor que cero',1000)
+    }else if( Number(topeMaximo) < Number(topeMinimo) ){
+      focusAndNotification('topeMaximoProducto','info','Tope máximo no puede ser menor que tope mínimo',1300)
     }else{
       if( saldo === '' ){
         saldo = 0
@@ -193,7 +207,9 @@ function consultarProducto(id){
         
         AgregarORemoverClaseNone('loading','a')  
         mostrarModal('modalActualizarProducto','o')
-        capturarEventoAgregarRestarCantidad(id, data.minimumExistence, data.maximumExistence)
+        topeMinimo = data.minimumExistence
+        topeMaximo = data.maximumExistence
+        //capturarEventoAgregarRestarCantidad(id, data.minimumExistence, data.maximumExistence)
         //capturarEventoActualizarProducto(id)
       }
     })
@@ -203,46 +219,54 @@ function consultarProducto(id){
     })
 }
 
-function capturarEventoAgregarRestarCantidad(id, topeMinimo, topeMaximo){
+function capturarEventoAgregarRestarCantidad(){
+  id = idProductoGeneral
   btnAgregarCantidad =  document.querySelector('#btnAgregarCantidad')
   btnRestarCantidad = document.querySelector('#btnRestarCantidad')
-  saldoActual = document.querySelector('#saldo_op').value
-  if( Number(saldoActual) === 0 ){
-    AgregarORemoverClaseDisabled('btnAgregarCantidad','a')
-    AgregarORemoverClaseDisabled('btnRestarCantidad','a')
-  }else if( Number(saldoActual) > 0 ){
-    AgregarORemoverClaseDisabled('btnAgregarCantidad','r')
-    AgregarORemoverClaseDisabled('btnRestarCantidad','r')
-    btnAgregarCantidad.addEventListener('click', ()=>{
-      cantidad = document.querySelector('#cantidad').value
-      if( cantidad === '' ){
-        focusAndNotification('cantidad','info','Cantidad no puede ser vacío',1400)
+  btnAgregarCantidad.addEventListener('click', ()=>{
+    saldoActual = document.querySelector('#saldo_op').value
+    cantidad = document.querySelector('#cantidad').value
+    if( cantidad === '' ){
+      focusAndNotification('cantidad','info','Cantidad no puede ser vacío',1400)
+    }else{
+      AgregarORemoverClaseDisabled('btnAgregarCantidad','a')
+      total = Number(saldoActual) + Number(cantidad)
+      if( total > topeMaximo ){
+        focus('cantidad')
+        AgregarORemoverClaseDisabled('btnAgregarCantidad','r')
+        notificacion('info','El tope máximo ('+topeMaximo+') ha sido superado',1300)
       }else{
-        total = Number(saldoActual) + Number(cantidad)
-        if( total > topeMaximo ){
-          notificacion('info','El tope máximo ('+topeMaximo+') ha sido superado',1300)
-        }else{
-          agregarMovimientoProducto(id, 's', cantidad, total)
-        }
+        agregarMovimientoProducto(id, 's', cantidad, total)
       }
-    })
-  
-    btnRestarCantidad.addEventListener('click', ()=>{
-      cantidad = document.querySelector('#cantidad').value
+    }
+  })
+
+  btnRestarCantidad.addEventListener('click', ()=>{
+    saldoActual = document.querySelector('#saldo_op').value
+    cantidad = document.querySelector('#cantidad').value
+    if( Number(saldoActual) === 0 ){
+      focus('cantidad')
+      notificacion('info','Stock en cero, no es posible vender.',1200)
+    }else if( Number(saldoActual) > 0 ){
       if( cantidad === '' ){
         focusAndNotification('cantidad','info','Cantidad no puede ser vacío',1400)
       }else{
+        AgregarORemoverClaseDisabled('btnRestarCantidad','a')
         total = Number(saldoActual) - Number(cantidad)
         if( total < 0 ){
+          focus('cantidad')
+          AgregarORemoverClaseDisabled('btnRestarCantidad','r')
           notificacion('info','No se puede realizar el proceso, STOCK negativo.',1300)
         }else if( total < topeMinimo ){
+          focus('cantidad')
+          AgregarORemoverClaseDisabled('btnRestarCantidad','r')
           notificacion('info','El tope mínimo ('+topeMinimo+') ha sido superado',1300)
         }else {
           agregarMovimientoProducto(id, 'r', cantidad, total)
         }
       }
-    })
-  }
+    }
+  })
 }
 
 function agregarMovimientoProducto(id, tipoMovimiento, cantidad, total){
@@ -261,11 +285,13 @@ function agregarMovimientoProducto(id, tipoMovimiento, cantidad, total){
       return response.json()
     })
     .then( data =>{
+      AgregarORemoverClaseDisabled('btnAgregarCantidad','r')
+      AgregarORemoverClaseDisabled('btnRestarCantidad','r')
       if( validaRespuestaPeticion(data, 'Movimiento de producto no fue realizado.') ){
         AgregarORemoverClaseNone('loading','a')
         document.querySelector('#cantidad').value = ''
         document.querySelector('#saldo_op').value = total
-        //obtenerProductos()
+        obtenerProductos()
         notificacion('success','Movimiento registrado',1000)
       }
     })
@@ -276,8 +302,6 @@ function agregarMovimientoProducto(id, tipoMovimiento, cantidad, total){
 }
 
 function capturarEventoActualizarProducto(){
-  console.log(idProductoGeneral)
-    
   nombre = document.querySelector('#nombreProducto_op').value
   marca = document.querySelector('#marcaProducto_op').value
   categoria = document.querySelector('#categoriaProducto_op').value
@@ -337,6 +361,73 @@ function actualizarProducto(producto){
     })
 }
 
+function capturarEventoAgregarMarca(){
+  btnAgregarMarca = document.querySelector('#btnAgregarMarca')
+  btnAgregarMarca.addEventListener('click', ()=>{
+    marca = document.querySelector('#marcaAgregar').value
+    if( marca === '' ){
+      focusAndNotification('marcaAgregar','info','Digite la marca',1200)
+    }else{
+      AgregarORemoverClaseDisabled('btnAgregarMarca','a')
+      obj = { 'name': marca, 'user': localStorage.getItem('hs_us') }
+      objData = JSON.stringify(obj)
+      url = rutaServicio+'/brand/add/'+objData
+      fetch(url)
+        .then( response =>{
+          return response.json()
+        })
+        .then( data =>{
+          AgregarORemoverClaseDisabled('btnAgregarMarca','r')
+          if( validaRespuestaPeticion(data, 'Marca no registrada, intentelo de nuevo.') ){
+            obtenerMarcas()
+              .then(data =>{ 
+                cargarSelector('marcaProducto', data)
+                document.querySelector('#marcaAgregar').value = ''
+                notificacion('success','Marca agregada.',1000)
+              })
+          }
+        })
+        .catch( error => {
+          console.error(error.message)
+          notificacion('error','Ha ocurrido un error al guardar la marca, intentelo de nuevo', 1500)
+        })
+    }
+  })
+}
+
+function capturarEventoAgregarCategoria(){
+  btnAgregarCategoria = document.querySelector('#btnAgregarCategoria')
+  btnAgregarCategoria.addEventListener('click', ()=>{
+    categoria = document.querySelector('#categoriaAgregar').value
+    if( categoria === '' ){
+      focusAndNotification('categoriaAgregar','info','Digite la categoría.',1200)
+    }else{
+      AgregarORemoverClaseDisabled('btnAgregarCategoria','a')
+      obj = { 'name': categoria, 'user': localStorage.getItem('hs_us') }
+      objData = JSON.stringify(obj)
+      url = rutaServicio+'/category/add/'+objData
+      fetch(url)
+      .then( response =>{
+        return response.json()
+      })
+      .then( data =>{
+        AgregarORemoverClaseDisabled('btnAgregarCategoria','r')
+        if( validaRespuestaPeticion(data, 'Categoría no registrada, intentelo de nuevo.') ){
+          obtenerCategorias()
+            .then(data =>{ 
+              cargarSelector('categoriaProducto', data)
+              document.querySelector('#categoriaAgregar').value = ''
+              notificacion('success','Categoría agregada.',1000)
+            })
+        }
+      })
+      .catch( error => {
+        console.error(error.message)
+        notificacion('error','Ha ocurrido un error al guardar la categoría, intentelo de nuevo.', 1500)
+      })
+    }
+  })
+}
 
 function obtenerMarcasYCategorias(){
   obtenerMarcas()
@@ -375,3 +466,8 @@ async function obtenerCategorias() {
 function limpiarTabalProductos(){
   tablaProductos.rows().remove().draw();
 }
+
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
