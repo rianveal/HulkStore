@@ -1,4 +1,4 @@
-origen = 'http://localhost:8080'
+origen = 'http://209.97.145.250:8080'
 rutaServicio = origen+'/ApiRestHulkStore/recursosWeb/servicios'
 tablaProductos = null, idProductoGeneral = null, topeMinimo = null, topeMaximo = null
 vectorProductos = []
