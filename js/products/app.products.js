@@ -323,12 +323,22 @@ function capturarEventoActualizarProducto(){
     focusAndNotification('categoriaProducto_op','info','Categroría de producto es requerida',1000)
   }else if( valorUnitario === '' ){
     focusAndNotification('valorUnitario_op','info','Valor unitario de producto es requerido',1000)
+  }else if( Number(valorUnitario) < 0 ){
+    focusAndNotification('valorUnitario_op','info','Valor unitario no puede ser menor que cero',1200)
   }else if( valorVenta === '' ){
     focusAndNotification('valorVenta_op','info','Valor venta de producto es requerido',1000)
+  }else if( Number(valorVenta) < 0 ){
+    focusAndNotification('valorVenta_op','info','Valor venta no puede ser menor que cero',1200)
   }else if( topeMinimo === '' ){
     focusAndNotification('topeMinimoProducto_op','info','Tope mínimo de producto es requerido',1000)
+  }else if( Number(topeMinimo) < 0 ){
+    focusAndNotification('topeMinimoProducto_op','info','Tope mínimo no puede ser menor que cero',1200)
   }else if( topeMaximo === '' ){
     focusAndNotification('topeMaximoProducto_op','info','Tope máximo de producto es requerido',1000)
+  }else if( Number(topeMaximo) < 0 ){
+    focusAndNotification('topeMaximoProducto_op','info','Tope máximo no puede ser menor que cero',1000)
+  }else if( Number(topeMaximo) < Number(topeMinimo) ){
+    focusAndNotification('topeMaximoProducto_op','info','Tope máximo no puede ser menor que tope mínimo',1300)
   }else{
     obj ={
       'id': idProductoGeneral,
